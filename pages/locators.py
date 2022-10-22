@@ -23,3 +23,14 @@ class FillingFormLocators():
 
 class PaymentPageLocators():
     SUM_POLIS = (By.CSS_SELECTOR, ' tui-money > span:nth-child(2)')
+
+class EmptyLocators():
+    EMPTY_PARS = [
+    (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/div[1]/div[1]/div[1]/div[3]"),
+    (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/div[1]/div[1]/div[2]/div"),
+    (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/div[1]/div[2]/div[1]/div"),
+    (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/div[1]/div[2]/div[2]/div"),
+    (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/div[1]/div[3]/div[2]"),
+    (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/div[1]/div[4]/div[1]/div"),
+    (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/div[1]/div[4]/div[2]/div[2]")
+    ]

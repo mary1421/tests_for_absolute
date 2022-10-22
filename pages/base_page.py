@@ -1,9 +1,8 @@
-from .locators import BasePageLocators, FillingFormLocators, PaymentPageLocators
+from .locators import BasePageLocators, FillingFormLocators, PaymentPageLocators, EmptyLocators
 from selenium.common.exceptions import NoAlertPresentException, NoSuchElementException, TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 import math, time
-from selenium.common.exceptions import ElementClickInterceptedException
 
 class BasePage():
     def __init__(self, browser, url, timeout=10):
@@ -23,14 +22,13 @@ class BasePage():
         calc_btn.click()
         return SUM_POLIS
 
-    def fill_form(self, fio, birth_date, passport_num, passport_date, address, phone, email, addperson):
+    def fill_form(self, fio, birth_date, passport_num, passport_date, address, phone, email):
         name = self.browser.find_element(*FillingFormLocators.FIO)
         name.send_keys(fio)
         birth = self.browser.find_element(*FillingFormLocators.BIRTH_DATE)
         birth.click()
         time.sleep(1)
         birth.send_keys(birth_date)
-        #self.fill_date(bd_y, bd_m, bd_d)
         passp = self.browser.find_element(*FillingFormLocators.PASSPORT_NUM)
         passp.click()
         passp.send_keys(passport_num)
@@ -45,23 +43,37 @@ class BasePage():
         ph_n.send_keys(phone)
         mail = self.browser.find_element(*FillingFormLocators.EMAIL)
         mail.send_keys(email)
-        add_p = self.browser.find_element(*FillingFormLocators.ADDPERSON)
+        #add_p = self.browser.find_element(*FillingFormLocators.ADDPERSON)
         #if addperson == 'ON':
         #    add_p.click()
-        #register_btn = self.browser.find_element(*FillingFormLocators.BTN_TO_PAY)
-        #register_btn.click()
 
     def go_to_pay(self):
         register_btn = self.browser.find_element(*FillingFormLocators.BTN_TO_PAY)
         register_btn.click()
 
+    def should_be_payment_page(self, sum):
+        self.should_be_payment_url()
+        self.should_be_sum_polis(sum)
+
+    def should_not_be_payment_page(self):
+        self.should_not_be_payment_url()
+        #self.should_be_sum_polis()
+
     def should_be_payment_url(self):
         assert 'securepayments.tinkoff' in self.browser.current_url, "securepayments.tinkoff is not in url"
 
+    def should_not_be_payment_url(self):
+        assert 'securepayments.tinkoff' not in self.browser.current_url, "securepayments.tinkoff is not in url"
+
     def should_be_sum_polis(self, sum):
-        text = self.browser.find_element(*PaymentPageLocators.SUM_POLIS).text
-        return text
         assert self.browser.find_element(*PaymentPageLocators.SUM_POLIS).text == sum, "Sum is wrong"
+
+    def should_empty_message(self, par):
+        EMPTY_MES = ["Не указана фамилия.", "Не указана дата рождения.", "Не указаны серия/номер паспорта.",\
+                     "Не указаны дата выдачи паспорта.", "Не указан адрес регистрации.", "Не указан номер телефона.",\
+                     "Не указан E-Mail."]
+        assert self.browser.find_element(*EmptyLocators.EMPTY_PARS[par]).text == EMPTY_MES[par], \
+            "Message is wrong or not present"
 
     def is_element_present(self, how, what):
         try:
