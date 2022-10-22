@@ -1,4 +1,4 @@
-import pytest
+import pytest, time
 from .pages.main_page import MainPage
 
 @pytest.mark.login_guest
@@ -9,15 +9,16 @@ class TestLoginFromMainPage():
         page.open()
         sum_polis = page.predcalculate_polis()
         fio = "Иванов Иван Иванович"
-        birth_date = '21.01.1990'
+        birth_date = '12.04.1999'
         passport_num = '5004 678901'
         passport_date = '12.05.2016'
         address = 'г Москва, ул Академика Королева, влд 2А '
-        phone = '+79034567788'
+        phone = '9034567788'
         email = 'mail7531@gmail.com'
         addperson = "ON"
         page.fill_form(fio, birth_date, passport_num, passport_date, address, phone, email, addperson)
         page.go_to_pay()
+        time.sleep(20)
         page.should_be_payment_url()
         page.should_be_sum_polis(sum_polis)
 '''

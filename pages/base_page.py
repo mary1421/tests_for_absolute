@@ -2,7 +2,8 @@ from .locators import BasePageLocators, FillingFormLocators, PaymentPageLocators
 from selenium.common.exceptions import NoAlertPresentException, NoSuchElementException, TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-import math
+import math, time
+from selenium.common.exceptions import ElementClickInterceptedException
 
 class BasePage():
     def __init__(self, browser, url, timeout=10):
@@ -12,6 +13,7 @@ class BasePage():
 
     def open(self):
         self.browser.get(self.url)
+
 
     def predcalculate_polis(self):
         SUM_POLIS = self.browser.find_element(*BasePageLocators.CHECKED_SUM_POLIS).text
@@ -25,22 +27,29 @@ class BasePage():
         name = self.browser.find_element(*FillingFormLocators.FIO)
         name.send_keys(fio)
         birth = self.browser.find_element(*FillingFormLocators.BIRTH_DATE)
+        birth.click()
+        time.sleep(1)
         birth.send_keys(birth_date)
+        #self.fill_date(bd_y, bd_m, bd_d)
         passp = self.browser.find_element(*FillingFormLocators.PASSPORT_NUM)
+        passp.click()
         passp.send_keys(passport_num)
         p_d = self.browser.find_element(*FillingFormLocators.PASSPORT_DATE)
+        p_d.click()
+        time.sleep(1)
         p_d.send_keys(passport_date)
         addr = self.browser.find_element(*FillingFormLocators.ADDRESS)
+        addr.click()
         addr.send_keys(address)
         ph_n = self.browser.find_element(*FillingFormLocators.PHONE)
         ph_n.send_keys(phone)
         mail = self.browser.find_element(*FillingFormLocators.EMAIL)
         mail.send_keys(email)
         add_p = self.browser.find_element(*FillingFormLocators.ADDPERSON)
-        if addperson == 'ON':
-            add_p.click()
-        register_btn = self.browser.find_element(*FillingFormLocators.BTN_TO_PAY)
-        register_btn.click()
+        #if addperson == 'ON':
+        #    add_p.click()
+        #register_btn = self.browser.find_element(*FillingFormLocators.BTN_TO_PAY)
+        #register_btn.click()
 
     def go_to_pay(self):
         register_btn = self.browser.find_element(*FillingFormLocators.BTN_TO_PAY)

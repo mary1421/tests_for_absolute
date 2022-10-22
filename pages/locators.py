@@ -8,13 +8,17 @@ class BasePageLocators():
 
 class FillingFormLocators():
     FIO = (By.NAME, "name")
-    BIRTH_DATE = (By.NAME, "dateBirth")
+    DATEPICKER = (By.CSS_SELECTOR, ".datepicker")
+    DATEPICKER_YEARS = (By.CSS_SELECTOR, ".year")
+    DATEPICKER_MONTH = (By.CSS_SELECTOR, ".month")
+    DATEPICKER_DAYS = (By.CSS_SELECTOR, ".days")
+    BIRTH_DATE = (By.CSS_SELECTOR, "#dateBirth")
     PASSPORT_NUM = (By.NAME, "id")
     PASSPORT_DATE = (By.NAME, "idDate")
     ADDRESS = (By.NAME, "address")
     PHONE = (By.NAME, "phone")
     EMAIL = (By.NAME, "email")
-    ADDPERSON = (By.NAME, "addPerson")
+    ADDPERSON = (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/label/span")
     BTN_TO_PAY = (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/div[5]/button")
 
 class PaymentPageLocators():
