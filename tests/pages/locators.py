@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 
 class BasePageLocators():
     VIRUS_CONTACT = (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[1]/label[2]/span")
-    CHECKED_SUM_POLIS = (By.CSS_SELECTOR, ".slider > .on")
+    CHECKED_SUM_POLIS = (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[1]/div[7]/div/span[1]")
     #PRICE = (By.CSS_SELECTOR, "#price")
     BTN_CALCULATE = (By.NAME, "calculate")
 

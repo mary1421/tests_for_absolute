@@ -49,24 +49,28 @@ class BasePage():
 
     def go_to_pay(self):
         register_btn = self.browser.find_element(*FillingFormLocators.BTN_TO_PAY)
+        time.sleep(5)
         register_btn.click()
 
     def should_be_payment_page(self, sum):
         self.should_be_payment_url()
         self.should_be_sum_polis(sum)
 
-    def should_not_be_payment_page(self):
-        self.should_not_be_payment_url()
-        #self.should_be_sum_polis()
-
     def should_be_payment_url(self):
-        assert 'securepayments.tinkoff' in self.browser.current_url, "securepayments.tinkoff is not in url"
+        assert 'securepayments.tinkoff' in self.browser.current_url, "Подстрока securepayments.tinkoff не найдена в url"\
+                                                                     ", текущий url - {self.browser.current_url}"
 
     def should_not_be_payment_url(self):
-        assert 'securepayments.tinkoff' not in self.browser.current_url, "securepayments.tinkoff is not in url"
+        assert 'securepayments.tinkoff' not in self.browser.current_url, "Подстрока securepayments.tinkoff найдена в url"
 
     def should_be_sum_polis(self, sum):
-        assert self.browser.find_element(*PaymentPageLocators.SUM_POLIS).text == sum, "Sum is wrong"
+        if sum == "1 500":
+            sum_polis = "5 000"
+        else:
+            sum_polis = "1 500"
+        assert self.browser.find_element(*PaymentPageLocators.SUM_POLIS).text == sum_polis, "Неверная сумма полиса."
+        #"Ожидается сумма", {sum_polis}, ", Текущая сумма - ", /
+        #self.browser.find_element(*PaymentPageLocators.SUM_POLIS).text
 
     def should_empty_message(self, par):
         EMPTY_MES = ["Не указана фамилия.", "Не указана дата рождения.", "Не указаны серия/номер паспорта.",\
