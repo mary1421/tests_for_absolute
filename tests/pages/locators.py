@@ -2,8 +2,10 @@ from selenium.webdriver.common.by import By
 
 class BasePageLocators():
     VIRUS_CONTACT = (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[1]/label[2]/span")
-    CHECKED_SUM_POLIS = (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[1]/div[7]/div/span[1]")
-    #PRICE = (By.CSS_SELECTOR, "#price")
+    PARENT_PRICE = (By.CSS_SELECTOR, ".option-description")
+    PRICE = (By.CSS_SELECTOR, "#price")
+    SLIDER_SUM = (By.CSS_SELECTOR, ".slider")
+    HOSP = (By.CSS_SELECTOR, ".hospitalization")
     BTN_CALCULATE = (By.NAME, "calculate")
 
 class FillingFormLocators():
@@ -18,7 +20,7 @@ class FillingFormLocators():
     ADDRESS = (By.NAME, "address")
     PHONE = (By.NAME, "phone")
     EMAIL = (By.NAME, "email")
-    ADDPERSON = (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/label/span")
+    #ADDPERSON = (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/label/span")
     BTN_TO_PAY = (By.XPATH, "/html/body/div[2]/main/div[2]/div/div/div[1]/div/div/div[2]/form/div[5]/button")
 
 class PaymentPageLocators():

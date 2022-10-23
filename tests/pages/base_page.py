@@ -14,13 +14,16 @@ class BasePage():
         self.browser.get(self.url)
 
 
-    def predcalculate_polis(self):
-        SUM_POLIS = self.browser.find_element(*BasePageLocators.CHECKED_SUM_POLIS).text
+    def predcalculate_polis(self, str_sum):
+        if str_sum == '100 000':
+            sum_slider = self.browser.find_element(*BasePageLocators.SLIDER_SUM)
+            sum_slider.click()
         vir_cont = self.browser.find_element(*BasePageLocators.VIRUS_CONTACT)
         vir_cont.click()
+
+    def go_to_filling(self):
         calc_btn = self.browser.find_element(*BasePageLocators.BTN_CALCULATE)
         calc_btn.click()
-        return SUM_POLIS
 
     def fill_form(self, fio, birth_date, passport_num, passport_date, address, phone, email):
         name = self.browser.find_element(*FillingFormLocators.FIO)
@@ -54,23 +57,45 @@ class BasePage():
 
     def should_be_payment_page(self, sum):
         self.should_be_payment_url()
-        self.should_be_sum_polis(sum)
+        self.should_be_sum_polis_in_payment(sum)
 
     def should_be_payment_url(self):
-        assert 'securepayments.tinkoff' in self.browser.current_url, "Подстрока securepayments.tinkoff не найдена в url"\
-                                                                     ", текущий url - {self.browser.current_url}"
+        current_url = self.browser.current_url
+        assert 'securepayments.tinkoff' in current_url, "Подстрока securepayments.tinkoff не найдена в url"\
+                                                                     ", текущий url - '{current_url}'"
 
     def should_not_be_payment_url(self):
-        assert 'securepayments.tinkoff' not in self.browser.current_url, "Подстрока securepayments.tinkoff найдена в url"
+        assert 'securepayments.tinkoff' not in self.browser.current_url, \
+            "Подстрока securepayments.tinkoff найдена в url"
 
-    def should_be_sum_polis(self, sum):
+    def should_be_sum_polis_in_payment(self, sum):
         if sum == "1 500":
             sum_polis = "5 000"
         else:
             sum_polis = "1 500"
         assert self.browser.find_element(*PaymentPageLocators.SUM_POLIS).text == sum_polis, "Неверная сумма полиса."
-        #"Ожидается сумма", {sum_polis}, ", Текущая сумма - ", /
-        #self.browser.find_element(*PaymentPageLocators.SUM_POLIS).text
+
+    def should_be_sums(self, str_sum):
+        if str_sum == "100 000":
+            sum_polis = "1 500 ₽"
+            hosp = "500"
+        else:
+            sum_polis = "5 000 ₽"
+            hosp = "1 500"
+        if self.browser.find_elements(*BasePageLocators.HOSP)[0].get_attribute("hidden") == "true":
+            hosp_sum = self.browser.find_elements(*BasePageLocators.HOSP)[1].text
+        else:
+            hosp_sum = self.browser.find_elements(*BasePageLocators.HOSP)[0].text
+        assert hosp_sum == hosp, "Неверная стоимость дня госпитализации."
+        a = self.browser.find_elements(*BasePageLocators.PARENT_PRICE)
+        b = self.browser.find_elements(*BasePageLocators.PRICE)
+        if self.browser.find_elements(*BasePageLocators.PARENT_PRICE)[0].get_attribute("hidden") == "true":
+            price = self.browser.find_elements(*BasePageLocators.PRICE)[1].accessible_name
+        else:
+            price = self.browser.find_elements(*BasePageLocators.PRICE)[0].accessible_name
+        assert price == sum_polis, "Неверная стоимость полиса."
+        return price
+
 
     def should_empty_message(self, par):
         EMPTY_MES = ["Не указана фамилия.", "Не указана дата рождения.", "Не указаны серия/номер паспорта.",\
